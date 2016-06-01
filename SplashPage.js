@@ -21,9 +21,10 @@ class SplashPage extends Component {
 
     render () {
         return (
-            <View style={{flex: 1, backgroundColor: '#C0C0C0', alignItems: 'center', justifyContent: 'center'}}>
-                <Text>PLAYABL THE CHALLENGE</Text>
-                <Image style={{position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height}} source={require('image!background')}></Image>
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+
+                <Image style={{position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height}} source={{uri: 'http://insider.ticketmaster.com/wp-content/uploads/2014/06/soccer-play-ball.png'}}></Image>
+                <Text style={{color: 'white', fontSize: 22}}>PLAYABL THE CHALLENGE</Text>
             </View>
         );
     }

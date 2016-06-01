@@ -45,7 +45,7 @@ class SearchPage extends Component  {
   // getMatchesDates between dates
   getMatchesDates(fromDate, toDate) {
     console.log("http://pads6.pa-sport.com/api/football/competitions/matchDates/"+API.key+"/"+fromDate+"/"+toDate)
-    fetch("http://aa-pads6.pa-sport.com/api/football/competitions/matchDates/"+API.key+"/"+fromDate+"/"+toDate+"/json", {method: "GET"})
+    fetch("http://pads6.pa-sport.com/api/football/competitions/matchDates/"+API.key+"/"+fromDate+"/"+toDate+"/json", {method: "GET"})
         .then((response) => response.json())
         .then((responseData) => {
             // Check for errors
