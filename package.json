@@ -1,0 +1,18 @@
+{
+  "name": "PlayablChallenge",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "calendar": "^0.1.0",
+    "moment": "^2.13.0",
+    "react": "^15.0.2",
+    "react-native": "^0.26.2",
+    "react-native-calendar": "^0.6.4",
+    "react-native-looped-carousel": "0.0.12",
+    "react-native-navbar": "^1.5.0",
+    "react-native-spring-carousel": "^0.3.4"
+  }
+}
