@@ -16,6 +16,7 @@ import {
 
 var SplashPage = require("./SplashPage");
 var HomePage = require("./HomePage");
+var Fixtures = require("./Fixtures");
 var SearchPage = require("./SearchPage");
 // import {
 //   SplashPage
@@ -32,10 +33,18 @@ class PlayablChallenge extends Component {
         );
     }
     if (routeId === 'Home') {
+
       // console.log({route});
         return (
             <HomePage
                 navigator={navigator} data={route.passProps.data} />
+        );
+    }
+    if (routeId === 'Fixtures') {
+      // console.log({route});
+        return (
+            <Fixtures
+                navigator={navigator}  />
         );
     }
     if (routeId === 'Search') {
