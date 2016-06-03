@@ -7,6 +7,8 @@ import {
   Image,
   ActivityIndicatorIOS,
   ListView,
+  ListItem,
+  StatusBar,
   Dimensions,
   Text,
   View
@@ -26,15 +28,19 @@ class Fixtures extends Component {
     this.state = {
       errors: null,
       fixtures: null,
+      ds: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
+      dataSource: null,
       size: Dimensions.get('window')
     };
+
   }
-  // apiKe = "http://pads6.pa-sport.com/api/football/competitions/fixtureDay/HpczY2gP4f/20160508/json";
 
   //
   getFixtures(date) {
     // console.log("http://pads6.pa-sport.com/api/football/competitions/fixtureDay/"+API.key+"/"+date+"/json")
-    var url = "http://pads6.pa-sport.com/api/football/competitions/fixtures/"+API.key+"/json";
+    var url = API.server+"football/competitions/fixtures/"+API.key+"/json";
     // url = "localhost/fixtures-data.xml"
     fetch(url, {method: "GET"})
         .then((response) => response.json())
@@ -54,7 +60,20 @@ class Fixtures extends Component {
                 errors: responseData.fixtures.errors.error
               });
             } else {
+
+              var items = []
+
+              for (var m in responseData.fixtures.fixture) {
+
+                  var obj = responseData.fixtures.fixture[m];
+                 items.push( obj );
+
+              }
+
+
               this.setState({
+                  dataSource: this.state.ds.cloneWithRows(items),
+                  // dataSource: this.state.ds.cloneWithRows(['row 1', 'row 2']),
                   currentFixtures: responseData.fixtures.fixture,
                   errors: null
               });
@@ -71,6 +90,7 @@ class Fixtures extends Component {
 
 
   componentWillMount () {
+    //  this.dataSource.setState( this.state.ds.cloneWithRows(['row 1', 'row 2'] );
     console.log('date is'+this.props.data)
       // var yyyy = this.props.data.getFullYear();
       // var mm = this.props.data.getMonth()+1;
@@ -111,9 +131,77 @@ class Fixtures extends Component {
   };
 
 
+    _renderItem(item) {
+
+      // const onPress = () => {
+      //   AlertIOS.alert(
+      //     'Complete',
+      //     null,
+      //     [
+      //       {text: 'Complete', onPress: (text) => this.itemsRef.child(item._key).remove()},
+      //       {text: 'Cancel', onPress: (text) => console.log('Cancelled')}
+      //     ],
+      //     'default'
+      //   );
+      // };
+
+      return (
+          <View style={{flex:1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#2196f3', paddingTop: 15, paddingBottom: 5, marginBottom: 1}}>
+
+         <View style={styles.team}>
+             <View  style={styles.badges}>
+               <Image style={styles.badgeImage} source={{uri: API.server+'football/team/badge/'+API.key+'/'+item.homeTeam['@teamID']+'/200/200'}} />
+             </View>
+               <Text style={styles.teamname}>
+                 {item.homeTeam['#text']}
+               </Text>
+               <Text style={styles.score}>
+                 {item.homeTeam.score}
+               </Text>
+         </View>
+
+         <Text style={styles.versus}>
+             VS
+         </Text>
+
+         <View style={styles.team}>
+             <View  style={styles.badges}>
+                 <Image style={styles.badgeImage} source={{uri: API.server+'football/team/badge/'+API.key+'/--'+item.awayTeam['@teamID']+'/200/200'}} ref={(ref) => this.awayBadge = ref}  onError={(e) => {console.log( "target :"+e.target+" " ) ; console.log(this.awayBadge.props.source.uri);   }}/>
+             </View>
+             <Text style={styles.teamname}>
+               {item.awayTeam['#text']}
+             </Text>
+             <Text style={styles.score}>
+               {item.awayTeam.score}
+             </Text>
+         </View>
+
+         </View>
+        // <ListItem item={item['awayTeam']['#text']} />
+      );
+    }
+
     _onLayoutDidChange(e) {
       var layout = e.nativeEvent.layout;
       this.setState({size: {width: layout.width, height: layout.height}});
+    }
+
+    renderfixturesList() {
+      // console.log( this.state.dataSource );
+      return (<View style={{flex:1}} onLayout={this._onLayoutDidChange}>
+        <NavigationBar
+          title={{ title: 'Fixtures', }}
+          leftButton={{ title: 'Back',handler: () => this.props.navigator.replace({ id: 'Search' }) }}
+           />
+           <StatusBar title="Fixtures" />
+           <ListView style={{backgroundColor: '#1e88e5'}}
+      dataSource={this.state.dataSource}
+      renderRow={this._renderItem.bind(this)}
+
+    />
+
+      </View>);
+
     }
 
   renderfixtures() {
@@ -203,7 +291,7 @@ class Fixtures extends Component {
 
     } else {
       // fixtures view
-      return this.renderfixtures();
+      return this.renderfixturesList();
     }
   }
 }

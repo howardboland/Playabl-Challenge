@@ -60,7 +60,7 @@ class PlayablChallenge extends Component {
     return (
         <Navigator
             title='Challenge'
-            initialRoute={{id: 'SplashPage', name: 'Index'}}
+            initialRoute={{id: 'Fixtures', name: 'Index'}}
             renderScene={this.renderScene.bind(this)} /> );
   }
 }

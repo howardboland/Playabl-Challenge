@@ -99,12 +99,21 @@ class SearchPage extends Component  {
     });
   }
 
+  goTo( id ) {
+    // Go to Home View to see matches on particular date
+    var navigator = this.props.navigator;
+    navigator.replace({
+        id: id
+    });
+  }
+
+
   render() {
 
       if (this.state.errors) {
         return <ErrorView error={this.state.errors} />;
       } else if (!this.state.matchDates) {
-        return <LoadingView />
+        return <LoadingView label="loading match dates..." />
       } else {
         return this.renderSearch();
       }
@@ -145,6 +154,11 @@ class SearchPage extends Component  {
           <Text style={styles.buttonText}>Go</Text>
         </TouchableHighlight>
 
+        <TouchableHighlight style={styles.button}
+              onPress={() => this.goTo('Fixtures')}>
+              <Text style={styles.buttonText}>View Fixtures</Text>
+            </TouchableHighlight>
+
           <Text style={styles.selectedDate}>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
     </View>);
   }
@@ -184,8 +198,8 @@ class ErrorView extends Component {
   onReload() {
     this.eventEmitter.emit('reload');
   }
-  render() {
 
+  render() {
     return (<View style={{flex:1}}>
       <NavigationBar style={{backgroundColor: '#f2dede'}}
         title={{ title: 'An Error Occurred', tintColor: "#a94442"}}/>
@@ -194,7 +208,6 @@ class ErrorView extends Component {
         <Text>
            {this.props.error}
         </Text>
-
         <TouchableHighlight style={styles.button}
               onPress={() => this.onReload()}>
               <Text style={styles.buttonText}>Try Again</Text>
@@ -202,7 +215,6 @@ class ErrorView extends Component {
             </View>
       </View>
     </View>);
-
   };
 }
 
